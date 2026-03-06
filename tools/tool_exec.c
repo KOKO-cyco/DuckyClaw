@@ -546,9 +546,6 @@ static OPERATE_RET __raspberry_pi_controller_exec(const char *command,
         return OPRT_INVALID_PARM;
     }
 
-    PR_ERR("sssssssssssssssssssssss [mcp] __raspberry_pi_controller_exec cmd='%s' timeout_ms=%u unsafe=%d", command,
-           (unsigned)timeout_ms, unsafe ? 1 : 0);
-
     *out_json = NULL;
 
 #if defined(PLATFORM_LINUX) && (PLATFORM_LINUX == 1)
@@ -570,9 +567,6 @@ static OPERATE_RET __raspberry_pi_controller_exec(const char *command,
     bool truncated = false;
 
     OPERATE_RET rt = __pi_system_exec_capture(command, timeout_ms, &output, &out_len, &exit_code, &truncated);
-
-        PR_ERR("sssssssssssssssssssssss [mcp] __pi_system_exec_capture done rt=%d exit_code=%d out_len=%u truncated=%d", rt,
-            exit_code, (unsigned)out_len, truncated ? 1 : 0);
 
     cJSON *json = cJSON_CreateObject();
     if (!json) {
@@ -812,8 +806,6 @@ static OPERATE_RET __tool_pi_exec(const MCP_PROPERTY_LIST_T *properties,
         return OPRT_INVALID_PARM;
     }
 
-    PR_ERR("sssssssssssssssssssssss [mcp] __tool_pi_exec ENTER cmd='%s'", cmd);
-
     int timeout_ms = 5000;
     (void)__get_int_prop(properties, "timeout_ms", &timeout_ms);
     if (timeout_ms < 0) {
@@ -822,8 +814,6 @@ static OPERATE_RET __tool_pi_exec(const MCP_PROPERTY_LIST_T *properties,
 
     bool unsafe = true;
     (void)__get_bool_prop(properties, "unsafe", &unsafe);
-
-    PR_ERR("sssssssssssssssssssssss [mcp] __tool_pi_exec args timeout_ms=%d unsafe=%d", timeout_ms, unsafe ? 1 : 0);
 
     cJSON *out = NULL;
     OPERATE_RET rt = __raspberry_pi_controller_exec(cmd, (uint32_t)timeout_ms, unsafe, &out);
@@ -898,7 +888,6 @@ static OPERATE_RET __tool_pi_handle_command(const MCP_PROPERTY_LIST_T *propertie
 
 OPERATE_RET tool_exec_register(void)
 {
-    PR_ERR("sssssssssssssssssssssss [ducky] tool_exec_register ENTER");
     OPERATE_RET rt = OPRT_OK;
     OPERATE_RET add_rt = OPRT_OK;
 
